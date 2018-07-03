@@ -46,7 +46,6 @@ export default {
 
 <style lang="less" scoped>
 @import '~vux/src/styles/1px.less';
-
 .container{
   .card-content{
     display: flex;

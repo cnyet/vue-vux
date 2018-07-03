@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { Group, Cell } from "vux";
+import { XHeader, Actionsheet, Group, Cell } from "vux";
 export default {
   data(){
     return {

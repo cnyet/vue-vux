@@ -1,35 +1,98 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-    <tabbar @on-index-change="changeTab">
-      <tabbar-item selected @on-item-click="clickTab">
-        <fa-icon slot="icon" name="adjust"></fa-icon>
-        <span slot="label">首页</span>
-      </tabbar-item>
-      <tabbar-item>
-        <fa-icon slot="icon" name="basketball-ball"></fa-icon>
-        <span slot="label">分类</span>
-      </tabbar-item>
-      <tabbar-item>
-        <fa-icon slot="icon" name="bell"></fa-icon>
-        <span slot="label">关于</span>
-      </tabbar-item>
-    </tabbar>
+  <div id="app" class="main-container">
+    <drawer :show.sync="drawerVisibility"
+      :show-mode="showModeValue"
+      :placement="showPlacementValue">
+      <div slot="drawer">
+        <group title="Drawer demo(beta)" style="margin-top:20px;">
+          <cell title="演示" link="/" @click.native="drawerVisibility = false">
+          </cell>
+          <cell title="导航" link="/" @click.native="drawerVisibility = false">
+          </cell>
+        </group>
+        <group title="showMode">
+          <radio v-model="showMode" :options="['push', 'overlay']" @on-change="onShowModeChange"></radio>
+        </group>
+        <group title="placement">
+          <radio v-model="showPlacement" :options="['left', 'right']" @on-change="onPlacementChange"></radio>
+        </group>
+      </div>
+      <view-box ref="viewBox">
+        <x-header
+        :left-options="leftOptions"
+        :right-options="rightOptions"
+        @on-click-more="showMenus = true">
+          <span>{{viewTitle}}</span>
+          <x-icon slot="left"
+            v-show="showDrawIcon"
+            type="navicon"
+            size="35"
+            @click="drawerVisibility = !drawerVisibility"
+            style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
+        </x-header>
+        <div v-transfer-dom>
+          <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
+        </div>
+        <router-view></router-view>
+        <tabbar @on-index-change="changeTab" slot="bottom">
+          <tabbar-item selected @on-item-click="clickTab">
+            <fa-icon slot="icon" name="adjust"></fa-icon>
+            <span slot="label">首页</span>
+          </tabbar-item>
+          <tabbar-item>
+            <fa-icon slot="icon" name="basketball-ball"></fa-icon>
+            <span slot="label">分类</span>
+          </tabbar-item>
+          <tabbar-item>
+            <fa-icon slot="icon" name="bell"></fa-icon>
+            <span slot="label">关于</span>
+          </tabbar-item>
+        </tabbar>
+      </view-box>
+    </drawer>
     <loading></loading>
   </div>
 </template>
 
 <script>
-import { Tabbar, TabbarItem } from "vux";
+import { XHeader, Actionsheet, TransferDom, Radio, Group, Cell, ViewBox, Drawer, Tabbar, TabbarItem } from "vux";
 import Loading from "./components/loading";
 export default {
   name: 'App',
   data(){
     return {
-
+      menus: {
+        menu1: '拍照',
+        menu2: '从相册选择'
+      },
+      viewTitle: "首页",
+      showDrawIcon: false,
+      leftOptions: {
+        showBack: false
+      },
+      rightOptions: {
+        showMore: false
+      },
+      showMenus: false,
+      drawerVisibility: false,
+      showMode: 'push',
+      showModeValue: "push",
+      showPlacement: 'left',
+      showPlacementValue: "left"
     };
   },
+  directives: {
+    TransferDom
+  },
   components: {
+    XHeader,
+    Actionsheet,
+    TransferDom,
+    Radio,
+    Group,
+    Cell,
+    ViewBox,
+    Drawer,
     Tabbar,
     TabbarItem,
     Loading
@@ -40,18 +103,42 @@ export default {
         this.$router.push({
           name: "Index"
         });
+        this.viewTitle = "首页";
+        this.showDrawIcon = true;
+        this.leftOptions.showBack = false;
+        this.rightOptions.showMore = false;
       }else if(index == 1){
         this.$router.push({
           name: "Category"
         });
+        this.viewTitle = "分类";
+        this.showDrawIcon = false;
+        this.leftOptions.showBack = true;
+        this.rightOptions.showMore = false;
       }else if(index == 2){
         this.$router.push({
           name: "About"
         });
+        this.viewTitle = "关于";
+        this.showDrawIcon = false;
+        this.leftOptions.showBack = false;
+        this.rightOptions.showMore = true;
       }else{}
     },
     clickTab(item){
       console.log("首页");
+    },
+    onShowModeChange (val) {
+      this.drawerVisibility = false;
+      setTimeout(one => {
+        this.showModeValue = val;
+      }, 400);
+    },
+    onPlacementChange (val) {
+      this.drawerVisibility = false;
+      setTimeout(one => {
+        this.showPlacementValue = val;
+      }, 400);
     }
   },
   created(){
@@ -62,8 +149,16 @@ export default {
 
 <style lang="less">
 @import '~vux/src/styles/reset.less';
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
 body{
   background-color: #fbf9fe;
+}
+.main-container{
+  height: 100%;
 }
 .fa-icon {
   width: auto;
