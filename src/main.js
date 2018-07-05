@@ -43,7 +43,7 @@ router.afterEach((to, from, next) => {
     store.commit("updateLoadState", {
       isLoading: false
     });
-  }, 500);
+  }, 300);
 });
 
 

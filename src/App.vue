@@ -17,11 +17,11 @@
           <radio v-model="showPlacement" :options="['left', 'right']" @on-change="onPlacementChange"></radio>
         </group>
       </div>
-      <view-box ref="viewBox">
+      <view-box ref="viewBox" class="viewBox">
         <x-header
-        :left-options="leftOptions"
-        :right-options="rightOptions"
-        @on-click-more="showMenus = true">
+          :left-options="leftOptions"
+          :right-options="rightOptions"
+          @on-click-more="showMenus = true">
           <span>{{viewTitle}}</span>
           <x-icon slot="left"
             v-show="showDrawIcon"
@@ -31,7 +31,7 @@
             style="fill:#fff;position:relative;top:-8px;left:-3px;"></x-icon>
         </x-header>
         <div v-transfer-dom>
-          <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
+          <actionsheet :menus="menus" v-show="showMenus" v-model="showMenus" show-cancel></actionsheet>
         </div>
         <router-view></router-view>
         <tabbar @on-index-change="changeTab" slot="bottom">
@@ -42,6 +42,10 @@
           <tabbar-item>
             <fa-icon slot="icon" name="basketball-ball"></fa-icon>
             <span slot="label">分类</span>
+          </tabbar-item>
+          <tabbar-item>
+            <fa-icon slot="icon" name="chess-knight"></fa-icon>
+            <span slot="label">演示</span>
           </tabbar-item>
           <tabbar-item>
             <fa-icon slot="icon" name="bell"></fa-icon>
@@ -55,6 +59,7 @@
 </template>
 
 <script>
+//组件z-index层次: Toast > Dialog > Popup > Mask > Tabbar
 import { XHeader, Actionsheet, TransferDom, Radio, Group, Cell, ViewBox, Drawer, Tabbar, TabbarItem } from "vux";
 import Loading from "./components/loading";
 export default {
@@ -117,6 +122,14 @@ export default {
         this.rightOptions.showMore = false;
       }else if(index == 2){
         this.$router.push({
+          name: "DemoList"
+        });
+        this.viewTitle = "演示";
+        this.showDrawIcon = false;
+        this.leftOptions.showBack = true;
+        this.rightOptions.showMore = false;
+      }else if(index == 3){
+        this.$router.push({
           name: "About"
         });
         this.viewTitle = "关于";
@@ -159,6 +172,9 @@ body{
 }
 .main-container{
   height: 100%;
+  .viewBox{
+    z-index: 1;
+  }
 }
 .fa-icon {
   width: auto;
