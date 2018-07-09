@@ -17,8 +17,9 @@
           <radio v-model="showPlacement" :options="['left', 'right']" @on-change="onPlacementChange"></radio>
         </group>
       </div>
-      <view-box ref="viewBox" class="viewBox">
+      <view-box ref="viewBox" class="viewBox" body-padding-top="46px" body-padding-bottom="55px">
         <x-header
+          class="header"
           :left-options="leftOptions"
           :right-options="rightOptions"
           @on-click-more="showMenus = true">
@@ -33,8 +34,10 @@
         <div v-transfer-dom>
           <actionsheet :menus="menus" v-show="showMenus" v-model="showMenus" show-cancel></actionsheet>
         </div>
-        <router-view></router-view>
-        <tabbar @on-index-change="changeTab" slot="bottom">
+        <transition name="fade">
+          <router-view></router-view>
+        </transition>
+        <tabbar @on-index-change="changeTab" slot="bottom" v-show="showTabBar">
           <tabbar-item selected @on-item-click="clickTab">
             <fa-icon slot="icon" name="adjust"></fa-icon>
             <span slot="label">首页</span>
@@ -62,8 +65,11 @@
 //组件z-index层次: Toast > Dialog > Popup > Mask > Tabbar
 import { XHeader, Actionsheet, TransferDom, Radio, Group, Cell, ViewBox, Drawer, Tabbar, TabbarItem } from "vux";
 import Loading from "./components/loading";
+import mixin from "./util/mixin";
+
 export default {
   name: 'App',
+  mixins: [mixin],
   data(){
     return {
       menus: {
@@ -172,6 +178,13 @@ body{
 }
 .main-container{
   height: 100%;
+  .header{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+  }
   .viewBox{
     z-index: 1;
   }

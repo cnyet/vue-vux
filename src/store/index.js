@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   //状态
   state: {
-
+    showTabBar: true
   },
   //state的计算属性
   getters: {
@@ -14,7 +14,9 @@ export default new Vuex.Store({
   },
   //改变store 中的状态的唯一方法集合
   mutations: {
-
+    updateTabBar(state, value){
+      state.showTabBar = value;
+    }
   },
   //异步操作和间接改变store
   actions:{
