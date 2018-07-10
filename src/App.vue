@@ -34,7 +34,7 @@
         <div v-transfer-dom>
           <actionsheet :menus="menus" v-show="showMenus" v-model="showMenus" show-cancel></actionsheet>
         </div>
-        <transition name="fade">
+        <transition :name="transitionName" mode="out-in" appear>
           <router-view></router-view>
         </transition>
         <tabbar @on-index-change="changeTab" slot="bottom" v-show="showTabBar">
@@ -72,6 +72,7 @@ export default {
   mixins: [mixin],
   data(){
     return {
+      transitionName: "",
       menus: {
         menu1: '拍照',
         menu2: '从相册选择'
@@ -107,6 +108,15 @@ export default {
     Tabbar,
     TabbarItem,
     Loading
+  },
+  watch: {
+    $route(to, from){
+      if(to.meta.index >= from.meta.index){
+        this.transitionName = "slide-left";
+      }else{
+        this.transitionName = "slide-right";
+      }
+    }
   },
   methods: {
     changeTab(index){
@@ -196,4 +206,20 @@ body{
   max-width: 100%;
   max-height: 100%;
 }
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active{
+  will-change: transition;
+  transition: all .2s ease;
+}
+.slide-right-enter{
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-left-enter{
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+
 </style>

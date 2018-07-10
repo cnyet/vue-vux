@@ -13,19 +13,23 @@ export default new Router({
     {
       path: '/',
       name: 'Index',
+      meta: {index: 0},
       component: Index
     }, {
       path: "/category",
       name: "Category",
+      meta: {index: 0},
       component: Category
-    }, {
-      path: "/about",
-      name: "About",
-      component: About
     }, {
       path: "/demo",
       name: "DemoList",
+      meta: {index: 0},
       component: DemoList
+    }, {
+      path: "/about",
+      name: "About",
+      meta: {index: 0},
+      component: About
     }, ...DemoRouter
   ]
 });
