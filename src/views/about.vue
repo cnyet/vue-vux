@@ -1,6 +1,17 @@
 <template>
   <div class="container">
+    <x-header
+      class="header"
+      :left-options="{showBack: false}"
+      :right-options="{showMore: true}"
+      title="我的"
+      @on-click-more="showMenus = true">
+    </x-header>
+    <div v-transfer-dom>
+      <actionsheet :menus="menus" v-show="showMenus" v-model="showMenus" show-cancel></actionsheet>
+    </div>
     <panel header="图文组合列表"
+      class="panel-wrap"
       :footer="footer"
       :list="list"
       type="1"
@@ -9,11 +20,16 @@
 </template>
 
 <script>
-import { Panel } from "vux";
+import { XHeader, Actionsheet, TransferDom, Panel } from "vux";
 
 export default {
   data(){
     return {
+      menus: {
+        menu1: '拍照',
+        menu2: '从相册选照片'
+      },
+      showMenus: false,
       footer: {
         title: "更多",
         url: '#'
@@ -38,7 +54,13 @@ export default {
       ]
     };
   },
+  directives: {
+    TransferDom
+  },
   components: {
+    XHeader,
+    Actionsheet,
+    TransferDom,
     Panel,
   },
   methods: {
@@ -53,5 +75,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.panel-wrap{
+  margin-top: 0;
+}
 </style>

@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   //状态
   state: {
-    showTabBar: true
+    showTabBar: true,
   },
   //state的计算属性
   getters: {
