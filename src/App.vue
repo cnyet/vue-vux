@@ -8,19 +8,19 @@
       </transition>
       <tabbar @on-index-change="changeTab" slot="bottom" v-show="showTabBar">
         <tabbar-item selected @on-item-click="clickTab">
-          <fa-icon slot="icon" name="home"></fa-icon>
+          <fa-icon class="tabbar-icon" slot="icon" name="home"></fa-icon>
           <span slot="label">首页</span>
         </tabbar-item>
         <tabbar-item>
-          <fa-icon slot="icon" name="basketball-ball"></fa-icon>
+          <fa-icon class="tabbar-icon" slot="icon" name="basketball-ball"></fa-icon>
           <span slot="label">分类</span>
         </tabbar-item>
         <tabbar-item>
-          <fa-icon slot="icon" name="bell"></fa-icon>
+          <fa-icon class="tabbar-icon" slot="icon" name="bell"></fa-icon>
           <span slot="label">消息</span>
         </tabbar-item>
         <tabbar-item>
-          <fa-icon slot="icon" name="chess-knight"></fa-icon>
+          <fa-icon class="tabbar-icon" slot="icon" name="chess-knight"></fa-icon>
           <span slot="label">我的</span>
         </tabbar-item>
       </tabbar>
@@ -146,6 +146,9 @@ body{
   }
   .viewBox{
     z-index: 1;
+    .tabbar-icon{
+      margin-top: 5px;
+    }
   }
 }
 .weui-tabbar .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon{

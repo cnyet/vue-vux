@@ -4,6 +4,7 @@
       <cell title="上拉加载" value="pullUp" link="/pullup" @click.native="updateTabBar" is-link></cell>
       <cell title="下拉刷新" value="pullDown" link="/pullDown" is-link value-align="left"></cell>
       <cell title="上拉下拉" value="pullUpAndDown" link="/pullUpAndDown" is-link value-align="left"></cell>
+      <cell title="scroll" value="iscroll" link="/iscroll" is-link value-align="left"></cell>
     </group>
   </div>
 </template>

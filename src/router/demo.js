@@ -1,6 +1,7 @@
 import PullUp from "@/components/pullUp";
 import PullDown from "@/components/pullDown";
 import PullUpAndDown from "@/components/pullUpAndDown";
+import IScroll from "@/components/myScroll";
 
 export const DemoRouter = [{
   path: "/pullup",
@@ -17,4 +18,9 @@ export const DemoRouter = [{
   name: "PullUpAndDown",
   meta: {index: 1},
   component: PullUpAndDown
+}, {
+  path: "/iscroll",
+  name: "IScroll",
+  meta: {index: 1},
+  component: IScroll
 }];

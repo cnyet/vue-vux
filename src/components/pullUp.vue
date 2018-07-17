@@ -1,35 +1,50 @@
 <template>
-  <div class="container" ref="wrapper">
-    <div class="content">
-      <div class="wrap" v-for="(item, index) in list" :key="index">{{item}}</div>
-    </div>
-    <div class="pullDown-wrap">
-      <inline-loading></inline-loading>
-    </div>
-    <div class="pullUp-wrap">
-
-    </div>
+  <div class="container">
+    <my-scroll :page="page" @on-refresh="onRefresh" @on-pull="onPull">
+      <div slot="scrollList">
+        <ul>
+          <li class="wrap" v-for="(item, index) in list" :key="index">{{item}}</li>
+        </ul>
+      </div>
+    </my-scroll>
   </div>
 </template>
 
 <script>
-import { InlineLoading, LoadMore, Scroller } from "vux";
+import myScroll from "./pullUpAndDown.vue";
 
 export default {
   data(){
     return {
-      list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      list: 15,
+      page: {
+        counter: 1,
+        pageStart: 1,
+        pageEnd: 1,
+        total: 10
+      }
     };
   },
   components: {
-    InlineLoading,
-    LoadMore,
-    Scroller
+    myScroll
   },
   methods: {
-
+    onRefresh(num){
+      setTimeout(()=>{
+        this.$root.$emit("setState", 3);
+      }, 500);
+    },
+    onPull(){
+      console.log("loadmore");
+      setTimeout(()=>{
+        this.list += 10;
+      }, 500);
+    }
   },
   mounted(){
+
+  },
+  created(){
 
   }
 };
@@ -40,7 +55,6 @@ export default {
 .container{
   position: relative;
   overflow: hidden;
-  background-color: #fff;
   height: 100%;
   .pullDown-wrap{
     height: 30px;
