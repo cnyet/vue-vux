@@ -5,6 +5,7 @@ import Index from '@/views/index';
 import Category from '@/views/category';
 import About from '@/views/about';
 import DemoList from '@/views/demoList';
+import NotFound from '@/views/notfound';
 
 Vue.use(Router);
 
@@ -30,6 +31,9 @@ export default new Router({
       name: "About",
       meta: {index: 0},
       component: About
+    }, {
+      path: "*",
+      component: NotFound
     }, ...DemoRouter
   ]
 });
