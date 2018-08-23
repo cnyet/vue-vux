@@ -29,6 +29,7 @@ import IScrollProbe from 'iscroll/build/iscroll-probe';
 import { LoadMore } from 'vux';
 
 export default{
+  name: "scroller",
   data(){
     return {
       iscroll: null,

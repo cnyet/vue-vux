@@ -92,12 +92,12 @@ export default {
 
 <style lang="less" scoped>
 @import '~vux/src/styles/1px.less';
-@import "../assets/variable.less";
+@import "../assets/styles/variable.less";
 
 .container{
   .view-header{
     height: 240px;
-    background-image: url("../assets/homeBg.jpg");
+    background-image: url("../assets/images/homeBg.jpg");
     background-repeat: no-repeat;
     background-position: center;
   }

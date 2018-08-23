@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { DemoRouter } from "./demo";
 import Router from 'vue-router';
-import Index from '@/views/index';
+import Home from '@/views/home';
 import Category from '@/views/category';
 import About from '@/views/about';
 import DemoList from '@/views/demoList';
@@ -13,22 +13,22 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
+      name: 'home',
       meta: {index: 0},
-      component: Index
+      component: Home
     }, {
       path: "/category",
-      name: "Category",
+      name: "category",
       meta: {index: 0},
       component: Category
     }, {
       path: "/demo",
-      name: "DemoList",
+      name: "demoList",
       meta: {index: 0},
       component: DemoList
     }, {
       path: "/about",
-      name: "About",
+      name: "about",
       meta: {index: 0},
       component: About
     }, {

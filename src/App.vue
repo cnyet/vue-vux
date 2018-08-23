@@ -72,22 +72,22 @@ export default {
     changeTab(index){
       if(index == 0){
         this.$router.push({
-          name: "Index"
+          name: "home"
         });
         this.showDrawIcon = true;
       }else if(index == 1){
         this.$router.push({
-          name: "Category"
+          name: "category"
         });
         this.showDrawIcon = false;
       }else if(index == 2){
         this.$router.push({
-          name: "DemoList"
+          name: "demoList"
         });
         this.showDrawIcon = false;
       }else if(index == 3){
         this.$router.push({
-          name: "About"
+          name: "about"
         });
         this.showDrawIcon = false;
       }else{}
@@ -111,7 +111,7 @@ export default {
       const pathIndex = this.$route.meta.index;
       if(pathIndex == 0 && this.$route.path != "/"){
         this.$router.push({
-          name: "Index"
+          name: "home"
         });
         this.showDrawIcon = true;
       }else{
