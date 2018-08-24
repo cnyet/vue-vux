@@ -24,6 +24,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "better-scroll": "^1.12.6",
     "iscroll": "^5.2.0",
     "vue": "^2.5.16",
     "vue-awesome": "^3.0.3",

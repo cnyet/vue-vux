@@ -24,12 +24,11 @@
 </template>
 
 <script>
-import IScroll from "iscroll";
-import IScrollProbe from 'iscroll/build/iscroll-probe';
+import BScroll from "better-scroll";
 import { LoadMore } from 'vux';
 
 export default{
-  name: "scroller",
+  name: "Scroller",
   data(){
     return {
       iscroll: null,
