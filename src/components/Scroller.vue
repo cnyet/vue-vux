@@ -1,43 +1,47 @@
 <template>
-  <div ref="wrapper" class="scroller-container">
-    <div class="scroll-content">
-      <div class="list-wrapper" ref="listWrapper">
-        <slot name="pullDown"
-          :pullDownRefresh="pullDownRefresh"
-          :beforePullDown="beforePullDown"
-          :isPullingDown="isPullingDown">
-          <div ref="pulldown" class="pulldown-wrapper" v-if="pullDownRefresh">
-            <div class="before-trigger" v-if="beforePullDown">
-              <span>松开加载</span>
-            </div>
-            <div class="after-trigger" v-else>
-              <div v-if="isPullingDown" class="loading">
-                <load-more tip="正在加载"></load-more>
-              </div>
-              <div v-else><span>加载完成</span></div>
-            </div>
+<div ref="wrapper" class="scroller-container">
+  <div class="list-wrapper">
+    <slot name="pullDown"
+      :pullDownRefresh="pullDownRefresh"
+      :beforePullDown="beforePullDown">
+      <div class="pullDown-wrapper">
+        <div class="pullDown-trigger" v-if="beforePullDown">
+          <span>下拉刷新</span>
+        </div>
+        <div class="pullDown-trigger" v-else>
+          <div v-if="isPullingDown">
+            <load-more class="loading" tip="正在刷新"></load-more>
           </div>
-        </slot>
-        <slot>
-          <ul class="list-content">
+          <div v-else>刷新完成</div>
+        </div>
+      </div>
+    </slot>
+    <div class="scroll-content" ref="scroll">
+      <div class="scroll-wrapper">
+        <slot name="content">
+          <ul class="list-content" :style="contentStyle">
             <li class="list-item" v-for="(item, index) in lists" :key="index">{{item}}</li>
           </ul>
         </slot>
         <slot name="pullUp"
           :pullUpLoad="pullUpLoad"
           :isPullUpLoad="isPullUpLoad">
-          <div class="pullup-wrapper" v-if="pullUpLoad">
-            <div class="before-trigger" v-if="!isPullUpLoad">
-              <span>松开加载</span>
+          <div class="pullUp-wrapper">
+            <div class="pullUp-trigger" v-if="beforePullUp">
+              <span>上拉加载</span>
             </div>
-            <div class="after-trigger" v-else>
-              <span>加载完成</span>
+            <div class="pullUp-trigger" v-else>
+              <div v-if="isPullUpLoad">
+                <load-more class="loading" tip="正在加载"></load-more>
+              </div>
+              <div v-else>加载完成</div>
             </div>
           </div>
         </slot>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -100,83 +104,58 @@ export default{
   data(){
     return {
       lists: 20,
+      scroll: null,
       beforePullDown: true,
       isPullingDown: false,
-      isPullUpLoad: false
+      beforePullUp: true,
+      isPullUpLoad: true,
+      pullDownStyle: '',
+      contentStyle: "",
+      pullUpStop: 0,
+      bubbleY: 0,
+      pullDownInitTop: 0,
+      isRebounding: false,
     };
   },
   created(){
 
   },
   mounted(){
-    setTimeout(() => {
+    this.$nextTick(() => {
       this.initScroll();
-    }, 20);
+      this.contentStyle = `min-height: ${this.$refs.scroll.clientHeight}px`;
+    });
   },
   methods: {
-    initScroll() {
-      if (!this.$refs.wrapper) {
-        return;
-      }
-      if (this.$refs.listWrapper && (this.pullDownRefresh || this.pullUpLoad)) {
-        this.$refs.listWrapper.style.minHeight = `660px`;
-      }
-
-      let options = {
-        probeType: this.probeType,
-        click: this.click,
-        scrollbar: this.scrollbar,
-        pullDownRefresh: this.pullDownRefresh,
-        pullUpLoad: this.pullUpLoad,
-        startY: this.startY
-      };
-
-      this.scroll = new BScroll(this.$refs.wrapper, options);
-
-      if (this.listenScroll) {
-        this.scroll.on('scroll', (pos) => {
-          this.$emit('scroll', pos);
-        });
-      }
-
-      if (this.listenScrollEnd) {
-        this.scroll.on('scrollEnd', (pos) => {
-          this.$emit('scroll-end', pos);
-        });
-      }
-
-      if (this.listenBeforeScroll) {
-        this.scroll.on('beforeScrollStart', () => {
-          this.$emit('beforeScrollStart');
-        });
-
-        this.scroll.on('scrollStart', () => {
-          this.$emit('scroll-start');
-        });
-      }
-
-      if (this.pullDownRefresh) {
-        this._initPullDownRefresh();
-      }
-
-      if (this.pullUpLoad) {
-        this._initPullUpLoad();
-      }
+    initScroll(){
+      this.scroll = new BScroll(this.$refs.scroll, {
+        probeType: 1,
+        pullDownRefresh: {
+          threshold: 30,
+          stop: 50
+        },
+        pullUpLoad: {
+          threshold: 30
+        },
+      });
+      this.initPullDownRefresh();
+      this.initPullUpLoad();
     },
-    _initPullDownRefresh() {
+    initPullDownRefresh(){
       this.scroll.on('pullingDown', () => {
         this.beforePullDown = false;
         this.isPullingDown = true;
-        this.$emit('pullingDown');
+        setTimeout(() => {
+          console.log("start");
+          this.forceUpdate(true);
+        }, 2000);
       });
-
       this.scroll.on('scroll', (pos) => {
         if (!this.pullDownRefresh) {
           return;
         }
         if (this.beforePullDown) {
           this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop);
-          this.pullDownStyle = `top:${Math.min(pos.y + this.pullDownInitTop, 10)}px`;
         } else {
           this.bubbleY = 0;
         }
@@ -186,31 +165,124 @@ export default{
         }
       });
     },
-    _initPullUpLoad() {
-      this.scroll.on('pullingUp', () => {
-        this.isPullUpLoad = true;
-        this.$emit('pullingUp');
+    reboundPullDown() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          this.isRebounding = true;
+          this.scroll.finishPullDown();
+          resolve();
+        }, 1000);
       });
+    },
+    afterPullDown() {
+      console.log("finish");
+      setTimeout(() => {
+        this.pullDownStyle = `top:${this.pullDownInitTop}px`;
+        this.beforePullDown = true;
+        this.isRebounding = false;
+        this.refresh();
+      }, this.scroll.options.bounceTime);
+    },
+    forceUpdate(dirty) {
+      console.log(this.isPullUpLoad);
+      if (this.isPullingDown) {
+        this.isPullingDown = false;
+        console.log("update");
+        this.reboundPullDown().then(() => {
+          this.afterPullDown();
+        });
+      } else if (this.isPullUpLoad) {
+        console.log("loading", this.pullUpStop);
+        this.reboundPullUp().then(() => {
+          this.afterPullUp();
+        });
+      } else {
+        this.refresh();
+      }
+    },
+    initPullUpLoad(){
+      this.scroll.on('pullingUp', () => {
+        setTimeout(() => {
+          console.log("start");
+          this.forceUpdate(true);
+        }, 2000);
+      });
+      this.scroll.on('touchEnd', (pos) => {
+        this.beforePullUp = false;
+        this.isPullingUp = true;
+        console.log("滑动结束"+pos.y);
+      });
+    },
+    afterPullUp(){
+      this.isPullUpLoad = false;
+      console.log("finish");
+      setTimeout(() => {
+        this.isPullUpLoad = true;
+        this.isRebounding = true;
+        this.beforePullUp = true;
+        this.refresh();
+      }, this.scroll.options.bounceTime);
+    },
+    reboundPullUp() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          this.isRebounding = true;
+          this.scroll.finishPullUp();
+          resolve();
+        }, 1000);
+      });
+    },
+    refresh() {
+      this.scroll && this.scroll.refresh();
     },
   }
 };
 </script>
 
 <style lang="scss">
-.pulldown-wrapper{
-  text-align: center;
-}
-.list-content{
-  .list-item{
-    padding: 10px;
-    text-align: center;
-    color: #666;
-    &:nth-child(odd){
-      background-color: #eee;
+.scroller-container{
+  .list-wrapper{
+    position: relative;
+    height: 614px;
+    font-size: 14px;
+    .loading{
+      height: 24px;
+      margin: 13px auto;
+    }
+    .pullDown-wrapper{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      .pullDown-trigger{
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+      }
+    }
+    .pullUp-wrapper{
+      .pullUp-trigger{
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+      }
     }
   }
 }
-.pullup-wrapper{
-  text-align: center;
+.scroll-content{
+  background-color: #ccc;
+  height: 100%;
+  overflow: hidden;
+  .list-content{
+    background-color: #fff;
+    .list-item{
+      padding: 10px;
+      text-align: center;
+      color: #666;
+      &:nth-child(odd){
+        background-color: #f0f0f0;
+      }
+    }
+  }
 }
 </style>
