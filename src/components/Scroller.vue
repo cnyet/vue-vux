@@ -5,13 +5,9 @@
       :pullDownRefresh="pullDownRefresh"
       :beforePullDown="beforePullDown">
       <div class="pullDown-wrapper">
-        <div class="pullDown-trigger" v-if="beforePullDown">
-          <span>下拉刷新</span>
-        </div>
+        <div class="pullDown-trigger" v-if="beforePullDown">下拉刷新</div>
         <div class="pullDown-trigger" v-else>
-          <div v-if="isPullingDown">
-            <load-more class="loading" tip="正在刷新"></load-more>
-          </div>
+          <load-more v-if="isPullingDown" class="loading" tip="正在加载"></load-more>
           <div v-else>刷新完成</div>
         </div>
       </div>
@@ -19,22 +15,18 @@
     <div class="scroll-content" ref="scroll">
       <div class="scroll-wrapper">
         <slot name="content">
-          <ul class="list-content" :style="contentStyle">
-            <li class="list-item" v-for="(item, index) in lists" :key="index">{{item}}</li>
+          <ul class="list-content" ref="content">
+            <li class="list-item" v-for="(item, index) in data" :key="index" @tap="tapItem($event,item)">{{item}}</li>
           </ul>
         </slot>
         <slot name="pullUp"
           :pullUpLoad="pullUpLoad"
           :isPullUpLoad="isPullUpLoad">
           <div class="pullUp-wrapper">
-            <div class="pullUp-trigger" v-if="beforePullUp">
-              <span>上拉加载</span>
-            </div>
+            <div class="pullUp-trigger" v-if="beforePullUp">上拉加载</div>
             <div class="pullUp-trigger" v-else>
-              <div v-if="isPullUpLoad">
-                <load-more class="loading" tip="正在加载"></load-more>
-              </div>
-              <div v-else>加载完成</div>
+              <load-more v-if="isPullUpLoad" class="loading" tip="正在加载"></load-more>
+              <div v-else>{{finishLoadMore}}</div>
             </div>
           </div>
         </slot>
@@ -61,18 +53,6 @@ export default{
       type: null,
       default: false
     },
-    listenScroll: {
-      type: Boolean,
-      default: false
-    },
-    listenBeforeScroll: {
-      type: Boolean,
-      default: false
-    },
-    listenScrollEnd: {
-      type: Boolean,
-      default: false
-    },
     pullDownRefresh: {
       type: null,
       default: false
@@ -89,11 +69,7 @@ export default{
       type: Number,
       default: 1
     },
-    mouseWheel: {
-      type: Boolean,
-      default: false
-    },
-    click: {
+    tap: {
       type: Boolean,
       default: true
     }
@@ -109,12 +85,9 @@ export default{
       isPullingDown: false,
       beforePullUp: true,
       isPullUpLoad: true,
-      pullDownStyle: '',
-      contentStyle: "",
       pullUpStop: 0,
-      bubbleY: 0,
       pullDownInitTop: 0,
-      isRebounding: false,
+      finishLoadMore: ""
     };
   },
   created(){
@@ -123,19 +96,29 @@ export default{
   mounted(){
     this.$nextTick(() => {
       this.initScroll();
-      this.contentStyle = `min-height: ${this.$refs.scroll.clientHeight}px`;
     });
+  },
+  watch: {
+    data(val) {
+      setTimeout(() => {
+        this.forceUpdate(true);
+      }, 20);
+    }
   },
   methods: {
     initScroll(){
+      this.$refs.content.style.minHeight = `${this.$refs.scroll.clientHeight+1}px`;
       this.scroll = new BScroll(this.$refs.scroll, {
-        probeType: 1,
+        probeType: this.probeType,
+        startY: this.startY,
+        scrollbar: this.scrollbar,
+        tap: true,
         pullDownRefresh: {
-          threshold: 30,
+          threshold: 80,
           stop: 50
         },
         pullUpLoad: {
-          threshold: 30
+          threshold: 80
         },
       });
       this.initPullDownRefresh();
@@ -146,56 +129,40 @@ export default{
         this.beforePullDown = false;
         this.isPullingDown = true;
         setTimeout(() => {
-          console.log("start");
-          this.forceUpdate(true);
-        }, 2000);
-      });
-      this.scroll.on('scroll', (pos) => {
-        if (!this.pullDownRefresh) {
-          return;
-        }
-        if (this.beforePullDown) {
-          this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop);
-        } else {
-          this.bubbleY = 0;
-        }
-
-        if (this.isRebounding) {
-          this.pullDownStyle = `top:${10 - (this.pullDownRefresh.stop - pos.y)}px`;
-        }
+          this.$emit('pullingDown');
+        }, 1000);
       });
     },
     reboundPullDown() {
       return new Promise((resolve) => {
         setTimeout(() => {
-          this.isRebounding = true;
           this.scroll.finishPullDown();
           resolve();
-        }, 1000);
+        }, 500);
       });
     },
     afterPullDown() {
-      console.log("finish");
       setTimeout(() => {
-        this.pullDownStyle = `top:${this.pullDownInitTop}px`;
         this.beforePullDown = true;
-        this.isRebounding = false;
         this.refresh();
       }, this.scroll.options.bounceTime);
     },
-    forceUpdate(dirty) {
-      console.log(this.isPullUpLoad);
-      if (this.isPullingDown) {
+    forceUpdate(val) {
+      if (this.isPullingDown){
         this.isPullingDown = false;
-        console.log("update");
         this.reboundPullDown().then(() => {
           this.afterPullDown();
         });
-      } else if (this.isPullUpLoad) {
-        console.log("loading", this.pullUpStop);
-        this.reboundPullUp().then(() => {
-          this.afterPullUp();
-        });
+      } else if (this.isPullUpLoad){
+        this.isPullUpLoad = false;
+        if(val){
+          this.finishLoadMore = "加载完成";
+        }else{
+          this.finishLoadMore = "没有更多数据了";
+        }
+        setTimeout(() => {
+          this.scroll.finishPullUp();
+        }, this.scroll.options.bounceTime);
       } else {
         this.refresh();
       }
@@ -203,37 +170,24 @@ export default{
     initPullUpLoad(){
       this.scroll.on('pullingUp', () => {
         setTimeout(() => {
-          console.log("start");
-          this.forceUpdate(true);
-        }, 2000);
+          this.$emit('pullingUp');
+        }, 1000);
+      });
+      this.scroll.on("scrollStart", ()=>{
+        this.beforePullUp = true;
+        this.isPullUpLoad = true;
       });
       this.scroll.on('touchEnd', (pos) => {
         this.beforePullUp = false;
         this.isPullingUp = true;
-        console.log("滑动结束"+pos.y);
-      });
-    },
-    afterPullUp(){
-      this.isPullUpLoad = false;
-      console.log("finish");
-      setTimeout(() => {
-        this.isPullUpLoad = true;
-        this.isRebounding = true;
-        this.beforePullUp = true;
-        this.refresh();
-      }, this.scroll.options.bounceTime);
-    },
-    reboundPullUp() {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          this.isRebounding = true;
-          this.scroll.finishPullUp();
-          resolve();
-        }, 1000);
       });
     },
     refresh() {
       this.scroll && this.scroll.refresh();
+    },
+    tapItem(e, item) {
+      console.log(e);
+      this.$emit('tap', item);
     },
   }
 };
@@ -255,6 +209,7 @@ export default{
       left: 0;
       width: 100%;
       .pullDown-trigger{
+        color: #999;
         height: 50px;
         line-height: 50px;
         text-align: center;
@@ -262,6 +217,7 @@ export default{
     }
     .pullUp-wrapper{
       .pullUp-trigger{
+        color: #999;
         height: 50px;
         line-height: 50px;
         text-align: center;
@@ -270,7 +226,7 @@ export default{
   }
 }
 .scroll-content{
-  background-color: #ccc;
+  background-color: #f0f0f0;
   height: 100%;
   overflow: hidden;
   .list-content{
@@ -280,7 +236,7 @@ export default{
       text-align: center;
       color: #666;
       &:nth-child(odd){
-        background-color: #f0f0f0;
+        background-color: #ddd;
       }
     }
   }
