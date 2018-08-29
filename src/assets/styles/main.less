@@ -1,0 +1,92 @@
+@import url("../../../node_modules/normalize.css/normalize.css");
+@import '~vux/src/styles/1px.less';
+@import "../../assets/styles/variable.less";
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+body{
+  background-color: @bgColor;
+}
+div{
+  box-sizing: border-box;
+}
+.main-container{
+  height: 100%;
+  .viewBox{
+    z-index: 1;
+    .tabbar-icon{
+      margin-top: 5px;
+    }
+  }
+}
+.weui-tabbar .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon{
+  font-size: 1rem;
+  color: @theme-color;
+}
+
+.fa-icon {
+  vertical-align: top;
+  width: auto;
+  height: 1.2rem; /* 或任意其它字体大小相对值 */
+  /* 要在 Safari 中正常工作，需要再引入如下两行代码 */
+  max-width: 100%;
+  max-height: 100%;
+}
+.fade-enter-active,
+.fade-leave-active,{
+  will-change: transition;
+  transition: all .2s;
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0;
+}
+
+/**
+ * 自适应布局
+ */
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 321px) and (max-width: 360px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 361px) and (max-width: 400px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 401px) and (max-width: 440px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 441px) {
+  html {
+    font-size: 20px;
+  }
+}
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 20px;
+  }
+  .main-container{
+    width: 768px;
+    margin: 0 auto;
+    border-left-width: 1px;
+    border-left-color: @border-color;
+    border-left-style: solid;
+    border-right-width: 1px;
+    border-right-color: @border-color;
+    border-right-style: solid;
+  }
+}

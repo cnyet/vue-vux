@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { DemoRouter } from "./demo";
 import Router from 'vue-router';
-import Home from '@/views/home';
+import Home from '@/views/home/home.vue';
 import Category from '@/views/category';
 import About from '@/views/about';
 import DemoList from '@/views/demoList';
@@ -19,17 +19,14 @@ export default new Router({
     }, {
       path: "/category",
       name: "category",
-      meta: {index: 0},
       component: Category
     }, {
       path: "/demo",
       name: "demoList",
-      meta: {index: 0},
       component: DemoList
     }, {
       path: "/about",
       name: "about",
-      meta: {index: 0},
       component: About
     }, {
       path: "*",

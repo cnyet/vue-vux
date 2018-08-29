@@ -6,21 +6,17 @@ import IScroll from "@/components/Scroller";
 export const DemoRouter = [{
   path: "/pullup",
   name: "PullUp",
-  meta: {index: 1},
   component: PullUp
 }, {
   path: "/pullDown",
   name: "PullDown",
-  meta: {index: 1},
   component: PullDown
 }, {
   path: "/pullUpAndDown",
   name: "PullUpAndDown",
-  meta: {index: 1},
   component: PullUpAndDown
 }, {
   path: "/iscroll",
   name: "IScroll",
-  meta: {index: 1},
   component: IScroll
 }];

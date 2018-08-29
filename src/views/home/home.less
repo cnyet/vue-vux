@@ -1,0 +1,73 @@
+@import '~vux/src/styles/1px.less';
+@import "../../assets/styles/variable.less";
+
+.home-container{
+  position: relative;
+  .view-header{
+    height: 4rem;
+  }
+  .header{
+    color: #fff;
+    background: linear-gradient(to bottom, rgba(0,0,0,.6) 10%, rgba(0,0,0,.3) 50%, rgba(0,0,0,0) 100%);
+    .icon-color{
+      fill: #fff;
+    }
+    .location{
+      display: inline-block;
+    }
+    .head-title{
+      font-weight: 300;
+      font-size: 1rem;
+    }
+  }
+  .home-grid{
+    padding: 0.625rem;
+    background-color: #fff;
+    &:before{
+      border-top: 0;
+      height: 0;
+    }
+    .grid-item{
+      background-color: #fff;
+      padding: 15px 0 0;
+      text-align: center;
+      &:after{
+        border-bottom: 0;
+        height: 0;
+      }
+      .weui-grid__icon{
+        width: auto;
+        height: auto;
+      }
+      .weui-grid__label{
+        margin-top: 0;
+      }
+    }
+    .grid-icon{
+      width:3rem;
+      height: 3rem;
+      display: inline-block;
+    }
+    .grid-label{
+      color: @text-6;
+    }
+  }
+  .flexbox-group{
+    padding: 15px 10px;
+  }
+  .flexbox-item{
+    height: 4rem;
+    font-size: 0.875rem;
+    color: @text-6;
+    padding: 0.625rem;
+    border-radius: 0.5rem;
+    background-color: @white;
+    border: 1px @border-color solid;
+    box-shadow: 0 0.25rem 0.65rem 0 rgba(0,0,0,.06);
+    .flexbox-desc{
+      color: @text-9;
+      margin-top: 0.3125rem;
+      font-size: 0.6rem;
+    }
+  }
+}

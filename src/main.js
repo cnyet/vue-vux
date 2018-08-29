@@ -6,8 +6,10 @@ import router from './router';
 import FastClick from 'fastclick';
 import store from "./store";   //引入vuex状态管理
 //全局注册图标
-import 'vue-awesome/icons';
-import FaIcon from 'vue-awesome/components/Icon';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+library.add(faCoffee);
 //使用微信 jssdk 和基于 Axios 封装的 AjaxPlugin
 import { WechatPlugin, AjaxPlugin } from 'vux';
 //移除移动端页面点击延迟
@@ -15,7 +17,7 @@ FastClick.attach(document.body);
 Vue.use(WechatPlugin);
 Vue.use(AjaxPlugin);
 //全局注册font-awesome图标组件
-Vue.component('fa-icon', FaIcon);
+Vue.component('fa-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
