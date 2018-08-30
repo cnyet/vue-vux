@@ -8,23 +8,23 @@
       </transition>
       <tabbar @on-index-change="changeTab" slot="bottom" v-show="showTabBar">
         <tabbar-item selected @on-item-click="clickTab">
-          <fa-icon class="tabbar-icon" slot="icon" icon="coffee"></fa-icon>
+          <x-icon type="ios-home-outline"  slot="icon" size="30"></x-icon>
           <span slot="label">咸鱼</span>
         </tabbar-item>
         <tabbar-item>
-          <fa-icon class="tabbar-icon" slot="icon" icon="fish"></fa-icon>
+          <x-icon type="ios-flower-outline" slot="icon" size="30"></x-icon>
           <span slot="label">鱼塘</span>
         </tabbar-item>
         <tabbar-item>
-          <fa-icon class="tabbar-icon" slot="icon" icon="bell"></fa-icon>
+          <x-icon type="ios-plus-outline" slot="icon" size="30"></x-icon>
           <span slot="label">发布</span>
         </tabbar-item>
         <tabbar-item>
-          <fa-icon class="tabbar-icon" slot="icon" icon="comment"></fa-icon>
+          <x-icon type="ios-chatbubble-outline" slot="icon" size="30"></x-icon>
           <span slot="label">消息</span>
         </tabbar-item>
         <tabbar-item>
-          <fa-icon class="tabbar-icon" slot="icon" icon="chess-knight"></fa-icon>
+          <x-icon type="ios-person-outline" slot="icon" size="30"></x-icon>
           <span slot="label">我的</span>
         </tabbar-item>
       </tabbar>
@@ -35,7 +35,7 @@
 
 <script>
 //组件z-index层次: Toast > Dialog > Popup > Mask > Tabbar
-import { Radio, Group, Cell, ViewBox, Tabbar, TabbarItem } from "vux";
+import { Radio, Group, Cell, ViewBox, Tabbar, TabbarItem, Icon } from "vux";
 import Loading from "./components/loading";
 import mixin from "./util/mixin";
 
@@ -61,7 +61,8 @@ export default {
     ViewBox,
     Tabbar,
     TabbarItem,
-    Loading
+    Loading,
+    Icon
   },
   watch: {
 

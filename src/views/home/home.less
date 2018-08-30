@@ -62,12 +62,61 @@
     padding: 0.625rem;
     border-radius: 0.5rem;
     background-color: @white;
-    border: 1px @border-color solid;
     box-shadow: 0 0.25rem 0.65rem 0 rgba(0,0,0,.06);
     .flexbox-desc{
       color: @text-9;
       margin-top: 0.3125rem;
       font-size: 0.6rem;
+    }
+  }
+  .card-wrap{
+    margin-top: 0;
+    padding: 0.625rem;
+    .card-title{
+      font-size: 1rem;
+      color: @text-6
+    }
+    .card-tips{
+      text-align: right;
+      font-size: 0.625rem;
+      color: @text-9;
+      span{
+        color: @text-3;
+        margin: 0 3px;
+      }
+    }
+    .card-group{
+      margin-top: 0.6rem;
+      .card-item{
+        padding: 0.625rem 0;
+        font-size: 1rem;
+        text-align: center;
+        background-color:@grey-light;
+        border-radius: 0.5rem;
+        .card-img{
+          width: 3rem;
+          height: 3rem;
+        }
+        .card-desc{
+          font-size: 0.75rem;
+          color: @text-9;
+        }
+      }
+      .item1{
+        .card-title{
+          color: #ffba43;
+        }
+      }
+      .item2{
+        .card-title{
+          color: #f87a25;
+        }
+      }
+      .item3{
+        .card-title{
+          color: #fd5834;
+        }
+      }
     }
   }
 }

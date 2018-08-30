@@ -24,9 +24,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.4",
-    "@fortawesome/free-solid-svg-icons": "^5.3.1",
-    "@fortawesome/vue-fontawesome": "^0.1.1",
     "better-scroll": "^1.12.6",
     "iscroll": "^5.2.0",
     "normalize.css": "^8.0.0",
