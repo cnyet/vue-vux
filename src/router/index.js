@@ -6,6 +6,7 @@ import Category from '@/views/category';
 import About from '@/views/about';
 import DemoList from '@/views/demoList';
 import NotFound from '@/views/notfound';
+import Message from "@/views/messages/messages.vue";
 
 Vue.use(Router);
 
@@ -24,6 +25,10 @@ export default new Router({
       path: "/demo",
       name: "demoList",
       component: DemoList
+    }, {
+      path: "/message",
+      name: "message",
+      component: Message
     }, {
       path: "/about",
       name: "about",

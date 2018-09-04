@@ -86,6 +86,10 @@ export default {
         this.showDrawIcon = false;
       }else if(index == 3){
         this.$router.push({
+          name: "message"
+        });
+      }else if(index == 4){
+        this.$router.push({
           name: "about"
         });
         this.showDrawIcon = false;

@@ -7,6 +7,7 @@ export default new Vuex.Store({
   //状态
   state: {
     showTabBar: true,
+    lang: "cn"
   },
   //state的计算属性
   getters: {

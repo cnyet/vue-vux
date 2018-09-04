@@ -5,6 +5,9 @@ import App from './App';
 import router from './router';
 import FastClick from 'fastclick';
 import store from "./store";   //引入vuex状态管理
+import VueI18n from "vue-i18n";
+import zh_cn from "./assets/lang/cn.json";
+import en_us from "./assets/lang/en.json";
 
 //使用微信 jssdk 和基于 Axios 封装的 AjaxPlugin
 import { WechatPlugin, AjaxPlugin } from 'vux';
@@ -12,6 +15,7 @@ import { WechatPlugin, AjaxPlugin } from 'vux';
 FastClick.attach(document.body);
 Vue.use(WechatPlugin);
 Vue.use(AjaxPlugin);
+Vue.use(VueI18n);
 Vue.config.productionTip = false;
 
 //注册module保存loading状态
@@ -38,13 +42,23 @@ router.afterEach((to, from, next) => {
     isLoading: false
   });
 });
+/* 定义全局全球化 */
+const i18n = new VueI18n({
+  locale: 'cn',
+  messages : {
+    en: en_us,
+    cn: zh_cn
+  }
+});
 
+console.log(i18n);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   // components: { App },
   // template: '<App/>'
-  render: h => h(App),
+  render: h => h(App)
 });
