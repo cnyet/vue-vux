@@ -1,5 +1,13 @@
 {
+  "language": "中文",
   "message": {
     "hello": "你好！"
+  },
+  "tabbar": {
+    "home": "咸鱼",
+    "exchange": "鱼塘",
+    "publish": "发布",
+    "messages": "消息",
+    "about": "我的"
   }
 }

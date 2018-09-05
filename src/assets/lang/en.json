@@ -1,5 +1,13 @@
 {
+  "language": "English",
   "message": {
     "hello": "hello world"
+  },
+  "tabbar": {
+    "home": "Home",
+    "exchange": "BBS",
+    "publish": "Publish",
+    "messages": "Messages",
+    "about": "About"
   }
 }

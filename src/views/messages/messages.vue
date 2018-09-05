@@ -1,10 +1,9 @@
 <template>
   <div class="messages-container">
-    <p>{{ $t("message.hello") }}</p>
-    <select v-model="$i18n.local">
-      <option value="cn">中文</option>
-      <option value="en">English</option>
-    </select>
+    <x-button mini :type="isCN" @click.native="changeLang('cn')">CN</x-button>
+    <x-button mini :type="isEN" @click.native="changeLang('en')">EN</x-button>
+    <p class="messages-content">当前语言是：{{ $t("language") }}</p>
+    <p class="messages-content">{{ $t("message.hello") }}</p>
   </div>
 </template>
 

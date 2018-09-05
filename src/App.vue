@@ -9,23 +9,23 @@
       <tabbar @on-index-change="changeTab" slot="bottom" v-show="showTabBar">
         <tabbar-item selected @on-item-click="clickTab">
           <x-icon type="ios-home-outline"  slot="icon" size="30"></x-icon>
-          <span slot="label">咸鱼</span>
+          <span slot="label">{{ $t("tabbar.home") }}</span>
         </tabbar-item>
         <tabbar-item>
           <x-icon type="ios-flower-outline" slot="icon" size="30"></x-icon>
-          <span slot="label">鱼塘</span>
+          <span slot="label">{{ $t("tabbar.exchange") }}</span>
         </tabbar-item>
         <tabbar-item>
           <x-icon type="ios-plus-outline" slot="icon" size="30"></x-icon>
-          <span slot="label">发布</span>
+          <span slot="label">{{ $t("tabbar.publish") }}</span>
         </tabbar-item>
         <tabbar-item>
           <x-icon type="ios-chatbubble-outline" slot="icon" size="30"></x-icon>
-          <span slot="label">消息</span>
+          <span slot="label">{{ $t("tabbar.messages") }}</span>
         </tabbar-item>
         <tabbar-item>
           <x-icon type="ios-person-outline" slot="icon" size="30"></x-icon>
-          <span slot="label">我的</span>
+          <span slot="label">{{ $t("tabbar.about") }}</span>
         </tabbar-item>
       </tabbar>
     </view-box>

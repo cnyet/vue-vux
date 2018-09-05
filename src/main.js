@@ -6,6 +6,7 @@ import router from './router';
 import FastClick from 'fastclick';
 import store from "./store";   //引入vuex状态管理
 import VueI18n from "vue-i18n";
+import util from "./util";
 import zh_cn from "./assets/lang/cn.json";
 import en_us from "./assets/lang/en.json";
 
@@ -44,14 +45,13 @@ router.afterEach((to, from, next) => {
 });
 /* 定义全局全球化 */
 const i18n = new VueI18n({
-  locale: 'cn',
+  locale: util.getLang(),
   messages : {
     en: en_us,
     cn: zh_cn
   }
 });
 
-console.log(i18n);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
