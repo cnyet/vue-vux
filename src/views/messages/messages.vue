@@ -4,6 +4,7 @@
     <x-button mini :type="isEN" @click.native="changeLang('en')">EN</x-button>
     <p class="messages-content">当前语言是：{{ $t("language") }}</p>
     <p class="messages-content">{{ $t("message.hello") }}</p>
+    <carousel></carousel>
   </div>
 </template>
 
