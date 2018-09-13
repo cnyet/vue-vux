@@ -2,10 +2,12 @@
   <div class="carousel-container">
     <div class="carousel-wrap" ref="carousel">
       <div class="carousel-item"
-        v-for="(item, index) in item"
+        v-for="(item, index) in data"
         :key="index"
-        :class="{ active : index == currentIndex }"
-        :style="{ transform: `translateX( ${translateArr[index]}px)` }">
+        :class="{active: activeArr[index]}"
+        :style="{transform: `translateX(${translateArr[index]}px)`}"
+        @mouseenter="stopCarousel"
+        @mouseleave="startCarousel">
         {{item}}
       </div>
     </div>

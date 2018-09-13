@@ -1,50 +1,88 @@
 export default{
   name: "Carousel",
+  props: {
+    data: {
+      type: Array,
+      default: []
+    },
+    interval: {
+      type: Number,
+      default: 1500
+    },
+  },
   data(){
     return {
-      isActive: true,
-      carouselWidth: 0,
       currentIndex: 0,
-      translate: 0,
-      item: [],
+      activeArr: [],
       translateArr: [],
       timer: null,
     }
   },
   created(){
-    this.item = [1, 2, 3, 4];
+
+  },
+  destroyed() {
+    clearInterval(this.timer);
   },
   mounted(){
-    this.carouselWidth = this.$refs.carousel.offsetWidth;
-    this.item.forEach((item, index)=>{
-      if(index < this.item.length-1){
-        this.translateArr.push(index*this.carouselWidth);
+    const carouselWidth = this.$refs.carousel.offsetWidth;
+    this.data.forEach((item, index)=>{
+      if(index == this.currentIndex){
+        this.activeArr[index] = true;
+        this.translateArr[index] = 0;
       }else{
-        this.translateArr.push(-this.carouselWidth);
+        this.activeArr[index] = false;
+        if(index == this.data.length-1){
+          this.translateArr[index] = -carouselWidth;
+        }else{
+          this.translateArr[index] = (index-this.currentIndex)*carouselWidth;
+        }
       }
     })
     this.$nextTick(()=>{
-      // this.startTimer();
+      this.startTimer();
     })
   },
   methods: {
     startTimer(){
       this.timer = setInterval(()=>{
-        if(this.currentIndex < this.item){
+        this.activeArr.fill(false);
+        this.$set(this.activeArr, this.currentIndex, true);
+        this.calcTranslate();
+        if(this.currentIndex < this.data.length-1){
           this.currentIndex++;
         }else{
           this.currentIndex = 0;
         }
-        this.calcTranslate();
-      }, 1500);
+      }, this.interval);
     },
     calcTranslate(){
-      this.translateArr[this.currentIndex] = 0;
-      this.translateArr[this.currentIndex+1] = this.carouselWidth;
-      this.translateArr[this.currentIndex] = 0;
-      this.translateArr[this.currentIndex] = 0;
+      const carouselWidth = this.$refs.carousel.offsetWidth;
+      this.translateArr.forEach((item, index)=>{
+        if(index == this.currentIndex){
+          this.$set(this.translateArr, index, 0);
+        }else{
+          if(Math.abs(index-this.currentIndex) == this.translateArr.length-1){
+            if(index > this.currentIndex){
+              this.$set(this.translateArr, index, -carouselWidth);
+            }
+            if(index < this.currentIndex){
+              this.$set(this.translateArr, index, carouselWidth);
+            }
+          }else{
+            this.$set(this.translateArr, index, (index-this.currentIndex)*carouselWidth);
+          }
+        }
+      })
+    },
+    stopCarousel(){
+      console.log("enter");
+      clearInterval(this.timer);
 
-      console.log(this.translateArr);
+    },
+    startCarousel(){
+      console.log("leave");
+      this.startTimer();
     }
   }
 }

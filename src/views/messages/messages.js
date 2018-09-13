@@ -9,6 +9,7 @@ export default {
   },
   data(){
     return {
+      item: [1,2,3,4],
       isCN: "default",
       isEN: "default",
     }

@@ -4,9 +4,9 @@
 .carousel-container{
   .carousel-wrap{
     position: relative;
-    height: 200px;
+    height: 150px;
     overflow: hidden;
-    background-color:@bgColor;
+    background-color:#f0f0f0;
     .carousel-item{
       width: 100%;
       position: absolute;
@@ -14,10 +14,11 @@
       left: 0;
       z-index: 0;
       height: 150px;
-      background-color: #f0f0f0;
+      background-color: #ddd;
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: all 0.3s linear;
       &.active{
         z-index: 1;
       }
