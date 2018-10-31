@@ -120,10 +120,27 @@ export default {
       }else{
         history.back();
       }
+    },
+    beforeunloadHandler(e) {
+      e = e || window.event;
+      // 兼容IE8和Firefox 4之前的版本
+      if (e) {
+        e.returnValue = '关闭提示';
+      }
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      return '关闭提示';
     }
   },
   created(){
 
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e));
+    });
+  },
+  destroyed() {
+    window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e));
   }
 };
 </script>
