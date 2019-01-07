@@ -135,12 +135,12 @@ export default {
 
   },
   mounted() {
-    this.$nextTick(() => {
-      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e));
-    });
+    // this.$nextTick(() => {
+    //   window.addEventListener('beforeunload', e => this.beforeunloadHandler(e));
+    // });
   },
   destroyed() {
-    window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e));
+    // window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e));
   }
 };
 </script>

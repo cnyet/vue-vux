@@ -32,6 +32,9 @@ store.registerModule("loadState", {
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.name === 'demoList') {
+    store.commit("updateTabBar", false);
+  }
   store.commit("updateLoadState", {
     isLoading: true
   });
