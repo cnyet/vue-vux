@@ -4,7 +4,7 @@ import Router from 'vue-router';
 import Home from '@/views/home/home.vue';
 import Category from '@/views/category';
 import About from '@/views/about';
-import DemoList from '@/views/demoList';
+import Demo from '@/views/demo.vue';
 import NotFound from '@/views/notfound';
 import Message from "@/views/messages/messages.vue";
 
@@ -23,8 +23,8 @@ export default new Router({
       component: Category
     }, {
       path: "/demo",
-      name: "demoList",
-      component: DemoList
+      component: Demo,
+      children:  DemoRouter
     }, {
       path: "/message",
       name: "message",
@@ -36,6 +36,6 @@ export default new Router({
     }, {
       path: "*",
       component: NotFound
-    }, ...DemoRouter
+    }
   ]
 });
