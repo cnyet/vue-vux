@@ -1,5 +1,5 @@
 import util from "../../util";
-import { XButton } from 'vux'
+import { XButton } from 'vux';
 import Carousel from "../../components/carousel/carousel.vue";
 export default {
   name: "Messages",
@@ -12,7 +12,7 @@ export default {
       item: [1,2,3,4],
       isCN: "default",
       isEN: "default",
-    }
+    };
   },
   created(){
     console.log(this.$i18n.locale);
@@ -30,4 +30,4 @@ export default {
       this.$i18n.locale = value;
     }
   }
-}
+};

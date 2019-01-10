@@ -9,7 +9,7 @@ export default {
         return {
           url: "javascript:",
           img: item
-        }
+        };
       }),
       categoryList: CATEGORYLIST,
       cardList: []

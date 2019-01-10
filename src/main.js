@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
-// import FastClick from 'fastclick';
+import FastClick from 'fastclick';
 import store from "./store";   //引入vuex状态管理
 import VueI18n from "vue-i18n";
 import util from "./util";
@@ -13,7 +13,7 @@ import en_us from "./assets/lang/en.json";
 //使用微信 jssdk 和基于 Axios 封装的 AjaxPlugin
 import { WechatPlugin, AjaxPlugin } from 'vux';
 //移除移动端页面点击延迟
-// FastClick.attach(document.body);
+FastClick.attach(document.body);
 Vue.use(WechatPlugin);
 Vue.use(AjaxPlugin);
 Vue.use(VueI18n);

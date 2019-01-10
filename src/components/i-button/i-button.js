@@ -14,7 +14,7 @@ export default {
   data() {
     return {
 
-    }
+    };
   },
   computed: {
     typeClass() {
@@ -36,4 +36,4 @@ export default {
   created() {
 
   }
-}
+};

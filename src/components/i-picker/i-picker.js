@@ -1,4 +1,5 @@
 import BScroll from 'better-scroll';
+import { dateData, dateAnchor, timeData } from '../../util/dateTime';
 export default {
   name: 'IPicker',
   props: {
@@ -38,7 +39,7 @@ export default {
       pickerData: this.dataGetter(),
       pickerAnchor: this.anchorGetter(),
       wheels: []
-    }
+    };
   },
   watch: {
     data () {
@@ -53,13 +54,15 @@ export default {
       return this.anchorGetter();
     },
     dataType () {
-      return !Array.isArray(this.proxyData[0]) ? 'cascade' : 'normal'
+      return !Array.isArray(this.proxyData[0]) ? 'cascade' : 'normal';
     }
   },
   methods: {
     dataGetter() {
       let data = null;
       switch(this.type) {
+        case 'date':
+          data = dateData; break;
         case 'normal':
         default:
           data = this.data; break;
@@ -69,101 +72,121 @@ export default {
     anchorGetter() {
       let anchor = [];
       if (this.anchor.length) {
-        anchor = this.anchor
+        anchor = this.anchor;
       } else {
         switch (this.type) {
           case 'date':
-            anchor = dateAnchor; break
+            anchor = dateAnchor; break;
           default:
-            anchor = this.anchor; break
+            anchor = this.anchor; break;
         }
       }
       anchor = anchor.map((item, i) => {
-        let index = 0
+        let index = 0;
         if (item.index) {
-          index = item.index
+          index = item.index;
         } else if (item.value) {
           index = this.pickerData && this.pickerData[i] && this.pickerData[i].indexOf(item.value) > -1
-            ? this.pickerData[i].indexOf(item.value) : 0
+            ? this.pickerData[i].indexOf(item.value) : 0;
         } else {
-          index = item
+          index = item;
         }
-        return index
-      })
-      return [...anchor]
+        return index;
+      });
+      return [...anchor];
     },
     createWheel(wheelWrapper, i) {
       if (!this.wheels[i]) {
       const wheel = this.wheels[i] = new BScroll(wheelWrapper.children[i], {
         wheel: {
           selectedIndex: 0,
-          rotate: 25
-        },
-        swipeTime: 1800
+          rotate: 0
+        }
       });
       wheel.on('scrollEnd', () => {
-        this.pickerChange(i)
+        this.cascadePickerChange(i);
       });
       } else {
-        this.wheels[i].refresh()
+        this.wheels[i].refresh();
       }
       return this.wheels[i];
     },
     setPickerData() {
-      this.pickerData = this.dataGetter()
-      this.pickerAnchor = this.anchorGetter()
+      this.pickerData = this.dataGetter();
+      this.pickerAnchor = this.anchorGetter();
       if (this.display) {
         this.$nextTick(() => {
-          const wheelWrapper = this.$refs.wheelWrapper
+          const wheelWrapper = this.$refs.wheelWrapper;
           this.pickerData.forEach((item, i) => {
-            this.createWheel(wheelWrapper, i)
-          })
-          this.wheelToAnchor(this.proxyAnchor)
-          this.destroyExtraWheels()
-        })
+            this.createWheel(wheelWrapper, i);
+          });
+          this.wheelToAnchor(this.proxyAnchor);
+          this.destroyExtraWheels();
+        });
       } else {
-        this.dataChange = true
+        this.dataChange = true;
       }
     },
-    pickerChange(i) {
+    cascadePickerChange(i) {
       if (this.dataType !== 'cascade') {
         return;
       }
       const newIndex = this.getCurrentValue()[i].index;
       if (newIndex !== this.pickerAnchor[i]) {
-        this.pickerAnchor.splice(i, 1, newIndex)
+        this.pickerAnchor.splice(i, 1, newIndex);
         this.updatePickerData(i + 1);
       }
     },
     getCurrentValue() {
-      const value = []
+      let value = [];
       this.wheels.forEach((wheel, i) => {
         const j = wheel.getSelectedIndex();
         value.push({
           index: j,
           value: this.pickerData[i][j]
         });
-      })
+      });
       return value;
     },
+    formatValue(arr) {
+      let result = [];
+      arr.forEach((n, i) => {
+        if ((this.type==='date' || this.type==='time')) {
+          let temp = n.value.slice(0,-1);
+          if (parseInt(temp) < 10) {
+            temp = '0'+temp;
+          }
+          result.push(temp);
+        } else {
+          result.push(n);
+        }
+      });
+      if (this.type==='date') {
+        return result.join('-');
+      } else if (this.type==='time') {
+        return result.join(':');
+      } else {
+        return result.join('');
+      }
+    },
     updatePickerData(wheelIndex = 0) {
-      let data = [...this.proxyData]
-      let i = 0
+      let data = [...this.proxyData];
+      let i = 0;
       while (data) {
         if (i >= wheelIndex) {
-          let wheelData = []
+          let wheelData = [];
           data.forEach((item) => {
-            wheelData.push(item.value)
-          })
-          this.pickerData[i] = wheelData
+            wheelData.push(item.value);
+          });
+          this.pickerData[i] = wheelData;
           this.pickerAnchor[i] = wheelIndex === 0
             ? (this.pickerAnchor[i] < data.length ? this.pickerAnchor[i] || 0 : 0)
-            : this.reloadWheel(i, wheelData)
+            : this.reloadWheel(i, wheelData);
         }
-        data = data.length ? data[this.pickerAnchor[i]].children : null
-        i++
+        data = data.length ? data[this.pickerAnchor[i]].children : null;
+        i++;
       }
-      this.pickerData = this.pickerData.slice(0, i)
+      this.pickerData = this.pickerData.slice(0, i);
     },
     show() {
       this.display = true;
@@ -181,44 +204,43 @@ export default {
         });
       } else {
         this.wheels.forEach((wheel) => {
-          wheel.enable()
+          wheel.enable();
         });
       }
-
     },
-    reloadWheel() {
-      const wheelWrapper = this.$refs.wheelWrapper
-      let scroll = wheelWrapper.children[index].querySelector('.picker-group-scroll')
-      let wheel = this.wheels ? this.wheels[index] : false
-      let dist = 0
+    reloadWheel(index, data) {
+      const wheelWrapper = this.$refs.wrapper;
+      console.log(wheelWrapper);
+      let scroll = wheelWrapper.children[index].querySelector('.wheel-scroll');
+      let wheel = this.wheels ? this.wheels[index] : false;
+      let dist = 0;
       if (scroll && wheel) {
-        this.$set(this.pickerData, index, data)
-        this.pickerAnchor[index] = dist
+        this.$set(this.pickerData, index, data);
+        this.pickerAnchor[index] = dist;
         this.$nextTick(() => {
           wheel = this.createWheel(wheelWrapper, index);
           wheel.wheelTo(dist);
-        })
+        });
       }
       return dist;
     },
     wheelToAnchor(data) {
-      console.log(data);
       this.wheels.forEach((wheel, i) => {
-        wheel.wheelTo(data[i] || 0)
+        wheel.wheelTo(data[i] || 0);
       });
     },
     destroyExtraWheels() {
-      const dataLength = this.pickerData.length
+      const dataLength = this.pickerData.length;
       if (dataLength < this.wheels.length) {
-        const extraWheels = this.wheels.splice(dataLength)
+        const extraWheels = this.wheels.splice(dataLength);
         extraWheels.forEach((wheel) => {
-          wheel.destroy()
-        })
+          wheel.destroy();
+        });
       }
     },
     hide() {
       this.wheels.forEach((wheel) => {
-        wheel.disable()
+        wheel.disable();
       });
       this.display = false;
     },
@@ -228,14 +250,15 @@ export default {
     },
     comfirm() {
       const isInTransition = this.wheels.some((wheel) => {
-        return wheel.isInTransition
-      })
+        return wheel.isInTransition;
+      });
       if (isInTransition) {
-        return
+        return;
       }
+      console.log(this);
       const selectedValues = this.getCurrentValue();
-      this.$emit('confirm', selectedValues);
+      this.$emit('confirm', this.formatValue(selectedValues));
       this.hide();
     }
   }
-}
+};

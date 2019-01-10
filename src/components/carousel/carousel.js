@@ -16,7 +16,7 @@ export default{
       activeArr: [],
       translateArr: [],
       timer: null,
-    }
+    };
   },
   created(){
 
@@ -38,10 +38,10 @@ export default{
           this.translateArr[index] = (index-this.currentIndex)*carouselWidth;
         }
       }
-    })
+    });
     this.$nextTick(()=>{
       this.startTimer();
-    })
+    });
   },
   methods: {
     startTimer(){
@@ -73,7 +73,7 @@ export default{
             this.$set(this.translateArr, index, (index-this.currentIndex)*carouselWidth);
           }
         }
-      })
+      });
     },
     stopCarousel(){
       console.log("enter");
@@ -85,4 +85,4 @@ export default{
       this.startTimer();
     }
   }
-}
+};

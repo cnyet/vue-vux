@@ -15,8 +15,8 @@
           <div class="picker-body-bottom"></div>
           <div class="picker-body-wrapper" ref="wrapper">
             <div class="picker-group" v-for="(item, index) in pickerData" :key="index">
-              <ul class="picker-group-scroll">
-                <li class="picker-group-item" v-for="(n, i) in item" :key="i">{{n}}</li>
+              <ul class="wheel-scroll">
+                <li class="wheel-item" v-for="(n, i) in item" :key="i">{{n}}</li>
               </ul>
             </div>
           </div>
