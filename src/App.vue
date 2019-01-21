@@ -93,7 +93,12 @@ export default {
           name: "about"
         });
         this.showDrawIcon = false;
-      }else{}
+      }else{
+        this.$router.push({
+          name: "home"
+        });
+        this.showDrawIcon = true;
+      }
     },
     clickTab(item){
       console.log("首页");

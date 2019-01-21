@@ -32,6 +32,7 @@ store.registerModule("loadState", {
 });
 
 router.beforeEach((to, from, next) => {
+  console.log(to.path);
   if (/^\/demo/.test(to.path)) {
     store.commit("updateTabBar", false);
   } else {
@@ -43,7 +44,7 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-router.afterEach((to, from, next) => {
+router.afterEach((to, from) => {
   store.commit("updateLoadState", {
     isLoading: false
   });

@@ -3,8 +3,7 @@ export default {
   props: {
     btnType: {
       type: String,
-      default: 'default',
-      required: true
+      default: 'default'
     },
     btnText: {
       type: String,
