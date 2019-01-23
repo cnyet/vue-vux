@@ -6,7 +6,6 @@
       <cell title="下拉刷新" value="pullDown" link="/demo/pullDown" is-link value-align="left"></cell>
       <cell title="上拉下拉" value="pullUpAndDown" link="/demo/pullUpAndDown" is-link value-align="left"></cell>
       <cell title="scroll" value="iscroll" link="/demo/iscroll" is-link value-align="left"></cell>
-      <cell title="按钮" value="button" link="/demo/button" is-link value-align="left"></cell>
       <cell title="弹出层" value="picker" link="/demo/picker" is-link value-align="left"></cell>
     </group>
   </div>

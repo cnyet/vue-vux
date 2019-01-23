@@ -12,12 +12,12 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   meta: {index: 0},
-    //   component: Home
-    // },
+    {
+      path: '/',
+      name: 'home',
+      meta: {index: 0},
+      component: Home
+    },
     {
       path: "/category",
       name: "category",

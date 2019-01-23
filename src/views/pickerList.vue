@@ -17,18 +17,20 @@
       :anchor="picker1.anchor"
       @confirm="handlePicker1Confirm">
     </i-picker>
+    <count-to countId="totalUsers" :endVal="1068" />
   </div>
 </template>
 
 <script type="text/javascript">
 import IButton from '../components/i-button/i-button.vue';
 import IPicker from '../components/i-picker/i-picker.vue';
+import CountTo from '../components/count-to/count-to.vue';
 
 const data1 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 const data2 = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 export default {
   name: 'picker',
-  components: { IButton, IPicker },
+  components: { IButton, IPicker, CountTo },
   data() {
     return {
       showPicker: false,
