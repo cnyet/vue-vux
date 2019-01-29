@@ -22,6 +22,7 @@
 </template>
 
 <script type="text/javascript">
+var pinyin = require("pinyin");
 import IButton from '../components/i-button/i-button.vue';
 import IPicker from '../components/i-picker/i-picker.vue';
 import CountTo from '../components/count-to/count-to.vue';
@@ -62,7 +63,7 @@ export default {
     }
   },
   created() {
-
+    console.log(pinyin("中心"));
   }
 };
 </script>
