@@ -19,6 +19,9 @@
     height: 270px;
     z-index: 10000;
     background: #fff;
+    &.hasSearch{
+      height: 300px;
+    }
     .picker-head{
       position: relative;
       height: 44px;
@@ -60,6 +63,60 @@
       font-weight: normal;
       text-align: center;
       color: #333;
+    }
+    .picker-body-search{
+      height: 30px;
+      margin-top: 2px;
+      padding: 0 12px;
+      line-height: 18px;
+      font-size: 14px;
+      overflow: hidden;
+      transition: all .3s ease;
+      &.active{
+        padding-right: 62px;
+      }
+      .picker-search{
+        padding: 5px 5px 5px 30px;
+        box-sizing: border-box;
+        background-color: #F0F2F5;
+        overflow: hidden;
+        .mint-field-core{
+          background-color: #F0F2F5;
+          height: 18px;
+          padding: 0;
+          border-radius: 5px;
+          border: 0;
+          -webkit-box-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          outline: 0;
+          line-height: 1.6;
+          font-size: inherit;
+          width: 100%;
+        }
+        .icon-search{
+          float: left;
+          margin-left: -20px;
+          color: #999;
+        }
+      }
+      .picker-body-btn{
+        height: 28px;
+        line-height: 28px;
+        width: 0;
+        text-decoration: none;
+        text-align: center;
+        float: right;
+        color: #666;
+        background-color: #F0F2F5;
+        margin-right: -50px;
+        &.visible{
+          width: 45px;
+        }
+        &:active{
+          background-color: #d8d8d8;
+        }
+      }
     }
     .picker-body{
       position: relative;

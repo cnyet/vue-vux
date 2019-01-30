@@ -1,7 +1,9 @@
 import BScroll from 'better-scroll';
 import { dateData, dateAnchor, timeData } from '../../util/dateTime';
+import { Icon } from 'vux';
 export default {
   name: 'IPicker',
+  components: { Icon },
   props: {
     data: {
       type: Array,
@@ -12,6 +14,10 @@ export default {
     type: {
       type: String,
       default: 'normal'
+    },
+    showSearch: {
+      type: Boolean,
+      default: false
     },
     anchor: {
       type: Array,
@@ -38,7 +44,8 @@ export default {
       dataChange: false,
       pickerData: this.dataGetter(),
       pickerAnchor: this.anchorGetter(),
-      wheels: []
+      wheels: [],
+      showBtn: false
     };
   },
   watch: {
@@ -259,6 +266,20 @@ export default {
       const selectedValues = this.getCurrentValue();
       this.$emit('confirm', this.formatValue(selectedValues));
       this.hide();
+    },
+    focusInput() {
+      this.inputValue = '';
+      this.showBtn = true;
+    },
+    blurInput() {
+      if (!this.inputValue) {
+        this.showBtn = false;
+      }
+    },
+    toSearch() {
+      if (this.inputValue) {
+        this.$emit('toSearch', this.inputValue);
+      }
     }
   }
 };

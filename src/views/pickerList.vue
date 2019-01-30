@@ -13,9 +13,11 @@
     <i-picker
       ref="picker1"
       :type="picker1.type"
+      :showSearch="true"
       :textTitle="picker1.textTitle"
       :anchor="picker1.anchor"
-      @confirm="handlePicker1Confirm">
+      @confirm="handlePicker1Confirm"
+      @toSearch="toSearchByParams">
     </i-picker>
     <count-to countId="totalUsers" :endVal="1068" />
   </div>
@@ -60,10 +62,45 @@ export default {
     },
     handlePicker1Confirm(value) {
       this.value = value ? JSON.stringify(value) : null;
+    },
+    toSearchByParams(value) {
+      console.log(value);
+    },
+    comparePinyin(a, b) {
+      if (typeof a !== 'string') {
+        a = a.toString();
+      }
+      if (typeof b !== 'string') {
+        b = b.toString();
+      }
+      return a.localeCompare(b);
+    },
+    sortByChar(arr) {
+      let pinyinArr = [];
+      let charArr = [];
+      arr.forEach(item => {
+        let firstChar = item;
+        if (typeof item !== 'string') {
+          firstChar = item.toString();
+        }
+        if (/[a-z0-9]/i.test(firstChar.charAt())) {
+          charArr.push(item);
+        } else {
+          pinyinArr.push(item);
+        }
+      });
+      charArr = charArr.sort(this.comparePinyin);
+      pinyinArr = pinyinArr.sort(this.comparePinyin);
+      return [...charArr, ...pinyinArr];
     }
   },
   created() {
-    console.log(pinyin("中心"));
+    var arr = ['张三', '李四', 3, '王五', '赵六', 0, 'Jhon', 'Ann', 'Tom'];
+    // const str = pinyin("中心", {
+    //   style: pinyin.STYLE_NORMAL
+    // });
+    const result = this.sortByChar(arr);
+    console.log(result);
   }
 };
 </script>
