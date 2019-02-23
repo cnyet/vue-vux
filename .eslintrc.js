@@ -25,6 +25,6 @@ module.exports = {
   rules: {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    "semi": ["warn"],                //分号结尾
+    'semi': ['error', 'always', {'omitLastInOneLineBlock': true}]   //分号结尾
   }
 }

@@ -47,7 +47,7 @@ export default {
         anchor: [],
         textTitle: '请选择日期',
         type: 'date'
-      },
+      }
     };
   },
   methods: {
@@ -92,15 +92,35 @@ export default {
       charArr = charArr.sort(this.comparePinyin);
       pinyinArr = pinyinArr.sort(this.comparePinyin);
       return [...charArr, ...pinyinArr];
+    },
+    compareData(a, b) {
+      if (typeof a !== 'string') {
+        a = a.toString();
+      }
+      if (typeof b !== 'string') {
+        b = b.toString();
+      }
+      if (/[^a-z0-9]/i.test(a.charAt())) {
+        a = pinyin(a, {
+          style: pinyin.STYLE_NORMAL
+        }).join('');
+      }
+      if (/[^a-z0-9]/i.test(b.charAt())) {
+        b = pinyin(b, {
+          style: pinyin.STYLE_NORMAL
+        }).join('');
+      }
+      return a.localeCompare(b);
     }
   },
   created() {
     var arr = ['张三', '李四', 3, '王五', '赵六', 0, 'Jhon', 'Ann', 'Tom'];
-    // const str = pinyin("中心", {
-    //   style: pinyin.STYLE_NORMAL
-    // });
-    const result = this.sortByChar(arr);
-    console.log(result);
+    // const result = this.sortByChar(arr);
+    const str = pinyin("中心", {
+      style: pinyin.STYLE_NORMAL
+    });
+    const dist = arr.sort(pinyin.compare);
+    console.log(dist);
   }
 };
 </script>

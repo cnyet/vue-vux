@@ -45,6 +45,7 @@ export default {
       pickerData: this.dataGetter(),
       pickerAnchor: this.anchorGetter(),
       wheels: [],
+      inputValue: '',
       showBtn: false
     };
   },
